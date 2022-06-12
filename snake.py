@@ -31,13 +31,13 @@ class Snake(object):
     def moveSnake(self):
         pressedKeys = pygame.key.get_pressed()
 
-        if pressedKeys[pygame.K_LEFT] or pressedKeys[pygame.K_a] and self.__direction != "RIGHT":
+        if (pressedKeys[pygame.K_LEFT] or pressedKeys[pygame.K_a]) and self.__direction != "RIGHT":
             self.__direction = "LEFT"
-        elif pressedKeys[pygame.K_RIGHT] or pressedKeys[pygame.K_d] and self.__direction != "LEFT":
+        elif (pressedKeys[pygame.K_RIGHT] or pressedKeys[pygame.K_d]) and self.__direction != "LEFT":
             self.__direction = "RIGHT"
-        elif pressedKeys[pygame.K_DOWN] or pressedKeys[pygame.K_s] and self.__direction != "UP":
+        elif (pressedKeys[pygame.K_DOWN] or pressedKeys[pygame.K_s]) and self.__direction != "UP":
             self.__direction = "DOWN"
-        elif pressedKeys[pygame.K_UP] or pressedKeys[pygame.K_w] and self.__direction != "DOWN":
+        elif (pressedKeys[pygame.K_UP] or pressedKeys[pygame.K_w]) and self.__direction != "DOWN":
             self.__direction = "UP"
 
         if self.__direction == "RIGHT":
