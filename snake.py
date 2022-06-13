@@ -9,6 +9,7 @@ class Snake(object):
     __mainPositionX = 300
     __mainPositionY = 300
     __direction = "RIGHT"
+    __speed = 10
 
     def __init__(self):
         self.head = pygame.Rect(self.__mainPositionX, self.__mainPositionY, 30, 30)
@@ -19,7 +20,7 @@ class Snake(object):
         self.lastBlock = self.body[len(self.body) - 1]
 
     def displaySnake(self, surface):
-        pygame.draw.rect(surface, (10, 240, 10), self.head,  border_radius=7)
+        pygame.draw.rect(surface, (10, 240, 10), self.head, border_radius=7)
         for bodyPart in self.body:
             pygame.draw.rect(surface, (10, 240, 10), bodyPart, border_radius=7)
 
@@ -41,16 +42,16 @@ class Snake(object):
             self.__direction = "UP"
 
         if self.__direction == "RIGHT":
-            self.head.x += 10
+            self.head.x += self.__speed
 
         elif self.__direction == "LEFT":
-            self.head.x -= 10
+            self.head.x -= self.__speed
 
         elif self.__direction == "DOWN":
-            self.head.y += 10
+            self.head.y += self.__speed
 
         elif self.__direction == "UP":
-            self.head.y -= 10
+            self.head.y -= self.__speed
 
     def followAlong(self):
         self.body.insert(0, self.head)
@@ -132,12 +133,15 @@ class App:
             self.update()
             self.render()
             self.events()
+            self.displayScore()
             pygame.display.flip()
         self.cleanUp()
 
     def init(self):
         self.screen = pygame.display.set_mode((self.__displayWIDTH, self.__displayHEIGHT))
         pygame.display.set_caption("Snake")
+        windowIcon = pygame.image.load("SnakeAssets/WindowIcon.png").convert(self.screen)
+        pygame.display.set_icon(windowIcon)
         self.clock = pygame.time.Clock()
 
         self.running = True
@@ -164,6 +168,18 @@ class App:
         elif self.__gameScore == 0:
             pygame.display.set_caption("Have fun!")
 
+    def displayScore(self):
+        scoreFont = pygame.font.Font("SnakeAssets/BungeeShade-Regular.ttf", 40)
+        scoreText = scoreFont.render(f"Score: {self.__gameScore}", False, (0, 80, 200))
+        gameOverText = scoreFont.render("Game Over!", False, (200, 0, 20))
+        if self.__inGame == 2:
+            x, y = 30, 625
+            self.screen.blit(scoreText, (x, y))
+        if self.__gameOver:
+            x, y = -50, -50
+            self.screen.blit(scoreText, (x, y))
+            self.screen.blit(gameOverText, (self.__displayWIDTH//2 - 150, self.__displayHEIGHT - 80))
+
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -172,9 +188,6 @@ class App:
             self.screen.fill(0)
             self.gameScoreMsg()
             self.screen.blit(self.__gameScreen, (0, 0))
-            scoreFont = pygame.font.Font("SnakeAssets/KdamThmorPro-Regular.ttf", 40)
-            scoreText = scoreFont.render(f"Score: {self.__gameScore}", False, (255, 255, 255))
-            self.screen.blit(scoreText, (30, 620))
             self.snake.displaySnake(self.screen)
             self.apple.displayApple(self.screen)
 
@@ -195,7 +208,7 @@ class App:
     def render(self):
         if self.__gameOver is True:
             pygame.display.set_caption("Game Over!")
-            font = pygame.font.Font("SnakeAssets/KdamThmorPro-Regular.ttf", 40)
+            font = pygame.font.Font("SnakeAssets/BungeeShade-Regular.ttf", 40)
             gameOverText = font.render(f"Score: {self.__gameScore}", False, (173, 47, 49))
 
             toRead = open("SnakeAssets/bestScore.txt", "r")
@@ -209,15 +222,15 @@ class App:
                 toWrite.close()
 
             toRead.close()
-            bestScoreFont = pygame.font.Font("SnakeAssets/KdamThmorPro-Regular.ttf", 40)
+            bestScoreFont = pygame.font.Font("SnakeAssets/BungeeShade-Regular.ttf", 40)
             bestScoreText = bestScoreFont.render(f"Best Score: {actualBestScore}", False, (173, 47, 50))
-            askForRestartOrQuitFont = pygame.font.Font("SnakeAssets/KdamThmorPro-Regular.ttf", 50)
+            askForRestartOrQuitFont = pygame.font.Font("SnakeAssets/BungeeShade-Regular.ttf", 40)
             askForRestartOrQuit = askForRestartOrQuitFont.render("Press 'R' to Restart or 'Q' to Quit", False,
                                                                  (173, 47, 55))
 
-            self.screen.blit(gameOverText, (self.__displayWIDTH // 2 - 60, self.__displayHEIGHT // 2 - 150))
-            self.screen.blit(bestScoreText, (self.__displayWIDTH // 2 - 100, self.__displayHEIGHT // 2 - 100))
-            self.screen.blit(askForRestartOrQuit, (self.__displayWIDTH // 2 - 330, self.__displayHEIGHT // 2 - 50))
+            self.screen.blit(gameOverText, (self.__displayWIDTH // 2 - 120, self.__displayHEIGHT // 2 - 150))
+            self.screen.blit(bestScoreText, (self.__displayWIDTH // 2 - 200, self.__displayHEIGHT // 2 - 100))
+            self.screen.blit(askForRestartOrQuit, (self.__displayWIDTH // 2 - 450, self.__displayHEIGHT // 2 - 50))
             self.checkForRestart()
             pygame.display.flip()
 
