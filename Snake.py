@@ -6,9 +6,13 @@ class Snake(object):
     __mainPositionY = 300
     __direction = "RIGHT"
     __speed = 10
+    __eyesUp = pygame.image.load("SnakeAssets/EyesUp.png")
+    __eyesDefault = __eyesUp
+    __eyesDown = pygame.image.load("SnakeAssets/EyesDown.png")
 
     def __init__(self):
         self.head = pygame.Rect(self.__mainPositionX, self.__mainPositionY, 30, 30)
+        self.eyes = self.__eyesUp.get_rect(topleft=[self.head.x, self.head.y])
         self.body = [pygame.Rect(self.__mainPositionX - 15, self.__mainPositionY, 30, 30),
                      pygame.Rect(self.__mainPositionX - 30, self.__mainPositionY, 30, 30),
                      pygame.Rect(self.__mainPositionX - 45, self.__mainPositionY, 30, 30),
@@ -16,9 +20,12 @@ class Snake(object):
         self.lastBlock = self.body[len(self.body) - 1]
 
     def displaySnake(self, surface):
+
         pygame.draw.rect(surface, (10, 240, 10), self.head, border_radius=7)
+
         for bodyPart in self.body:
             pygame.draw.rect(surface, (10, 240, 10), bodyPart, border_radius=7)
+        surface.blit(self.__eyesUp, (self.head.x, self.head.y))
 
     def collideInItself(self):
         for bodyPart in self.body:
@@ -38,15 +45,19 @@ class Snake(object):
             self.__direction = "UP"
 
         if self.__direction == "RIGHT":
+            self.__eyesUp = self.__eyesDefault
             self.head.x += self.__speed
 
         elif self.__direction == "LEFT":
+            self.__eyesUp = self.__eyesDefault
             self.head.x -= self.__speed
 
         elif self.__direction == "DOWN":
+            self.__eyesUp = self.__eyesDown
             self.head.y += self.__speed
 
         elif self.__direction == "UP":
+            self.__eyesUp = self.__eyesDown
             self.head.y -= self.__speed
 
     def followAlong(self):
