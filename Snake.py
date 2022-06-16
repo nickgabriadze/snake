@@ -27,10 +27,6 @@ class Snake(object):
             pygame.draw.rect(surface, (10, 240, 10), bodyPart, border_radius=7)
         surface.blit(self.__eyesUp, (self.head.x, self.head.y))
 
-    def collideInItself(self):
-        for bodyPart in self.body:
-            if self.head.x == bodyPart.x:
-                pass
 
     def moveSnake(self):
         pressedKeys = pygame.key.get_pressed()
