@@ -5,7 +5,7 @@ class Snake(object):
     __mainPositionX = 300
     __mainPositionY = 300
     __direction = "RIGHT"
-    __speed = 10
+    __speed = 15
     __eyesUp = pygame.image.load("SnakeAssets/EyesUp.png")
     __eyesDefault = __eyesUp
     __eyesDown = pygame.image.load("SnakeAssets/EyesDown.png")
