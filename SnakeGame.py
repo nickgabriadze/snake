@@ -23,14 +23,15 @@ class SnakeGame:
 
     def run(self):
         self.init()
-        FPS = 24
+        Frames = 24
         self.snake = Snake()
         self.apple = Apple()
         while self.running:
-            self.clock.tick(FPS)
+            self.clock.tick(Frames)
             self.update()
             self.render()
             self.events()
+
             self.displayScore()
             pygame.display.flip()
         self.cleanUp()
@@ -70,12 +71,11 @@ class SnakeGame:
         scoreFont = pygame.font.Font("SnakeAssets/BungeeShade-Regular.ttf", 40)
         scoreText = scoreFont.render(f"Score: {self.__gameScore}", False, (0, 80, 200))
         gameOverText = scoreFont.render("Game Over!", False, (200, 0, 20))
+        x, y = 100, 625
         if self.__inGame == 2:
-            x, y = 30, 625
             self.screen.blit(scoreText, (x, y))
+            self.displayBestScore()
         if self.__gameOver:
-            x, y = -50, -50
-            self.screen.blit(scoreText, (x, y))
             self.screen.blit(gameOverText, (self.__displayWIDTH // 2 - 150, self.__displayHEIGHT - 80))
 
     def events(self):
@@ -133,17 +133,33 @@ class SnakeGame:
             pygame.display.flip()
 
     def cleanUp(self):
-        self.screen.fill(0)
+        self.screen.fill(10)
+
+    def displayBestScore(self):
+        toRead = open("SnakeAssets/bestScore.txt", "r")
+
+        actualBestScore = int(toRead.readlines()[0])
+
+        if self.__gameScore > actualBestScore:
+            toWrite = open("SnakeAssets/bestScore.txt", "w")
+            toWrite.write(str(self.__gameScore))
+            actualBestScore = self.__gameScore
+            toWrite.close()
+
+        toRead.close()
+        bestScoreFont = pygame.font.Font("SnakeAssets/BungeeShade-Regular.ttf", 40)
+        bestScoreText = bestScoreFont.render(f"Best: {actualBestScore}", False, (0, 80, 200))
+        self.screen.blit(bestScoreText, (880, 625))
 
     def checkForRestart(self):
         pressedKeys = pygame.key.get_pressed()
         if pressedKeys[pygame.K_r]:
-            newApp = SnakeGame()
+            newApp = App()
             newApp.run()
         if pressedKeys[pygame.K_q]:
             self.running = False
 
 
 if __name__ == "__main__":
-    app = SnakeGame()
+    app = App()
     app.run()
