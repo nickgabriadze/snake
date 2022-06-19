@@ -154,12 +154,12 @@ class SnakeGame:
     def checkForRestart(self):
         pressedKeys = pygame.key.get_pressed()
         if pressedKeys[pygame.K_r]:
-            newApp = App()
-            newApp.run()
+            newGame = SnakeGame()
+            newGame.run()
         if pressedKeys[pygame.K_q]:
             self.running = False
 
 
 if __name__ == "__main__":
-    app = App()
+    app = SnakeGame()
     app.run()
