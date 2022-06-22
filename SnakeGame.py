@@ -58,11 +58,11 @@ class SnakeGame:
                 self.__inGame += 1  # 2
 
     def gameScoreMsg(self):
-        if self.__gameScore >= 10:
+        if 10 <= self.__gameScore < 50:
             pygame.display.set_caption("Wow, you've got some skills!")
-        elif self.__gameScore >= 50:
+        elif 50 <= self.__gameScore < 100:
             pygame.display.set_caption("Who are you?!")
-        elif self.__gameScore >= 100:
+        elif 100 <= self.__gameScore:
             pygame.display.set_caption("I have no words for that score, Keep going!")
         elif self.__gameScore == 0:
             pygame.display.set_caption("Have fun!")
